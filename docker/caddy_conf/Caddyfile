@@ -1,0 +1,7 @@
+poke.pabu.dev {
+	respond "Hello, world!"
+}
+
+:80 {
+    respond "I am working locally via IP!"
+}
