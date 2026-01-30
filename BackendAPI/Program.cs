@@ -6,9 +6,9 @@ namespace BackendAPI
     {
         public static void Main(string[] args)
         {
-            EnvReader.Load(".env");
 
             var password = Environment.GetEnvironmentVariable("MARIADB_PASSWORD");
+
             var serverVersion = new MySqlServerVersion(new Version(12, 1));
 
             Console.WriteLine(password);
