@@ -1,6 +1,6 @@
 import styles from "./Navigation.module.css";
 
-export default function Header() {
+export default function Navigation() {
   return (
     <nav className={styles.header}>
       <a className={styles.navlink} href="">
