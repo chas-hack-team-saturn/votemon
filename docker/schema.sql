@@ -1,0 +1,14 @@
+CREATE DATABASE IF NOT EXISTS PokeScrandle;
+
+USE PokeScrandle;
+
+CREATE TABLE IF NOT EXISTS Pokemon(
+	DexId INT,
+	Name NVARCHAR(50),
+	Url VARCHAR(2083), -- Image VARBINARY,
+	Votes INT,
+	
+	CONSTRAINT PK_Pokemon PRIMARY KEY(DexId)
+);
+
+CREATE UNIQUE INDEX UX_Pokemon_Name ON Pokemon(Name);
