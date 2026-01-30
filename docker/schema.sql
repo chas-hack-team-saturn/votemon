@@ -9,5 +9,3 @@ CREATE TABLE IF NOT EXISTS Pokemon(
 	
 	PRIMARY KEY (DexId)
 );
-
-CREATE UNIQUE INDEX UX_Pokemon_Name ON Pokemon(Name);
