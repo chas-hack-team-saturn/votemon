@@ -1,4 +1,14 @@
 services:
+  backend:
+    build:
+      context: .
+      dockerfile: ./BackendAPI/Dockerfile
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - 8080:8080
+    
   db:
     image: mariadb:12
     restart: always
