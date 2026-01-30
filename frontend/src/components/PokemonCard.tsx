@@ -5,13 +5,13 @@ import styles from "./PokemonCard.module.css";
 export interface PokemonCardProps {
   pokemon: Pokemon;
   onVote: (id: number) => void; // Add this prop for handling votes
+  disabled?: boolean; // Add this line
 }
 
 export const PokemonCard: React.FC<PokemonCardProps> = ({
   pokemon,
   onVote,
 }) => {
-  console.log("rost resultat", onVote);
   return (
     <button
       className={styles.pokemonCard}

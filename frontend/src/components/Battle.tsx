@@ -4,7 +4,8 @@ import styles from "./Battle.module.css";
 import { PokemonCard } from "./PokemonCard";
 import { getPokemon } from "../api/api";
 import type { Pokemon } from "../types/pokemon";
-import finishedModal from "../components/FinishedModal";
+import FinishedModal from "../components/FinishedModal";
+import { storage } from "../utils/storage"; // Import the storage utility
 
 export interface Rounds {
   totalRounds: number;
@@ -12,6 +13,7 @@ export interface Rounds {
 }
 
 export default function Battle() {
+  const [hasFinishedDaily, setHasFinishedDaily] = useState<boolean>(false);
   const [rounds, setRounds] = useState<Rounds>({
     totalRounds: 10,
     currentRound: 1,
@@ -21,17 +23,36 @@ export default function Battle() {
   const [pokemon2, setPokemon2] = useState<Pokemon | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState<boolean>(false); // Hantera modalen utan isModalVisible
+
+  // Initialize storage and check daily progress
+  useEffect(() => {
+    storage.initialize();
+    const finished = storage.getHasFinishedDaily();
+    setHasFinishedDaily(finished);
+
+    // If already finished today, set to final round and show modal
+    if (finished) {
+      setRounds((prev) => ({ ...prev, currentRound: 10 }));
+      // Show the modal immediately for returning users
+      setShowModal(true); // Visa modalen direkt
+    }
+  }, []);
+
+  // Show finishedModal when hasFinishedDaily becomes true (for new completions)
+  useEffect(() => {
+    if (hasFinishedDaily) {
+      setShowModal(true); // Visa modalen direkt
+    }
+  }, [hasFinishedDaily]);
 
   const fetchRandomPokemon = async () => {
     try {
       setIsLoading(true);
-
-      // Fetch two random Pokémon
       const [firstPokemon, secondPokemon] = await Promise.all([
         getPokemon(),
         getPokemon(),
       ]);
-
       setPokemon1(firstPokemon);
       setPokemon2(secondPokemon);
       setError(null);
@@ -49,28 +70,68 @@ export default function Battle() {
         ...prev,
         currentRound: prev.currentRound + 1,
       }));
-
-      // Fetch new Pokémon for next round
       fetchRandomPokemon();
     } else {
-      finishedModal();
+      // Game completed - mark as finished for today
+      storage.setHasFinishedDaily(true);
+      setHasFinishedDaily(true);
+      // Note: finishedModal() will be called by the useEffect above
+
+      setShowModal(true); // Visa modalen direkt
       console.log("Game completed!");
     }
   };
 
   // Add vote for a specific Pokémon
   const addVote = (pokemonId: number) => {
-    // Implement your voting logic here
-    console.log(`Voted for Pokémon with ID: ${pokemonId}`);
+    // Show modal if already finished for today but still allow UI interaction
+    if (hasFinishedDaily) {
+      setShowModal(true); // Visa modalen om det redan har avslutats
+      return;
+    }
 
-    // After voting, advance to next round
+    fetch(`backend/vote=${pokemonId}`, { method: "Put" }).catch((err) =>
+      console.error("Error recording vote:", err)
+    );
+
+    console.log(`Voted for Pokémon with ID: ${pokemonId}`);
     advanceRound();
+  };
+
+  // Add a reset function if needed (for testing)
+  const resetDailyProgress = () => {
+    storage.resetDailyProgress();
+    setHasFinishedDaily(false);
+    setRounds((prev) => ({ ...prev, currentRound: 1 }));
+    fetchRandomPokemon();
+    setShowModal(false);
   };
 
   // Initial fetch on component mount
   useEffect(() => {
     fetchRandomPokemon();
-  }, [rounds.currentRound]);
+  }, []);
+
+  // Add an effect to check for day changes periodically
+  useEffect(() => {
+    const checkDayChange = () => {
+      if (storage.isNewDay()) {
+        storage.resetDailyProgress();
+        setHasFinishedDaily(false);
+        setRounds((prev) => ({ ...prev, currentRound: 1 }));
+
+        // Refresh Pokémon if they exist
+        if (pokemon1 && pokemon2) {
+          fetchRandomPokemon();
+        }
+      }
+    };
+
+    // Check every minute for day changes
+    const interval = setInterval(checkDayChange, 60000);
+
+    return () => clearInterval(interval);
+  }, [pokemon1, pokemon2]);
 
   if (isLoading) {
     return <div className={styles.loading}>Loading Pokémon...</div>;
@@ -92,13 +153,33 @@ export default function Battle() {
 
   return (
     <div className={styles.battle}>
-      <RoundCounter rounds={rounds} />
+      {/* Header with progress and reset button */}
+      <div className={styles.header}>
+        <RoundCounter rounds={rounds} />
+
+        <div className={styles.dailyInfo}>
+          <span>Daily Challenge • Resets at midnight</span>
+          {hasFinishedDaily && (
+            <span className={styles.completedBadge}>✓ Completed today</span>
+          )}
+        </div>
+
+        <button
+          onClick={resetDailyProgress}
+          className={styles.resetButton}
+          title="Reset daily progress (for testing)">
+          🔄
+        </button>
+      </div>
 
       <h1 className={styles.title}>Vilken är bäst?</h1>
 
       <div className={styles.pokemonContainer}>
-        {/* Pass pokemon1 and create an onVote function for it */}
-        <PokemonCard pokemon={pokemon1} onVote={() => addVote(pokemon1.Id)} />
+        <PokemonCard
+          pokemon={pokemon1}
+          onVote={() => addVote(pokemon1.Id)}
+          disabled={hasFinishedDaily}
+        />
 
         <img
           className={styles.vsSign}
@@ -106,9 +187,15 @@ export default function Battle() {
           alt="Versus sign"
         />
 
-        {/* Pass pokemon2 and create an onVote function for it */}
-        <PokemonCard pokemon={pokemon2} onVote={() => addVote(pokemon2.Id)} />
+        <PokemonCard
+          pokemon={pokemon2}
+          onVote={() => addVote(pokemon2.Id)}
+          disabled={hasFinishedDaily}
+        />
       </div>
+
+      {/* Rendera modalen när showModal är sant */}
+      {showModal && <FinishedModal onClose={() => setShowModal(false)} />}
     </div>
   );
 }
