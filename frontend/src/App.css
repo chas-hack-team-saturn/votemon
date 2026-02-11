@@ -1,0 +1,15 @@
+:root {
+  --clr-l-brand: oklch(0.6461 0.1891 17.1);
+  --clr-l-text-s: oklch(0.3019 0.0258 354.4);
+  --clr-l-text-w: oklch(0.5031 0.0196 338.03);
+  --clr-l-border-s: oklch(0.6441 0.0193 340.18);
+  --clr-l-border-w: oklch(0.8003 0.0026 345.23);
+  --clr-l-fill: oklch(0.9521 0 0);
+
+  --clr-d-brand: oklch(0.6518 0.1876 8.32);
+  --clr-d-text-s: oklch(1 0 0);
+  --clr-d-text-w: oklch(0.8246 0.0156 332.28);
+  --clr-d-border-s: oklch(0.5415 0.0333 309.87);
+  --clr-d-border-w: oklch(0.3841 0.0226 314.54);
+  --clr-d-fill: oklch(0.3118 0.0244 317.63);
+}
