@@ -1,8 +1,8 @@
-FROM node:22-alpine as builder
+FROM node:22-alpine AS builder
 WORKDIR /app
-COPY package.json package-lock.json ./
+COPY ./frontend/package.json package-lock.json ./
 RUN npm install
-COPY . .
+COPY ./frontend/ ./
 RUN npx vite build
 
 FROM nginx:alpine
