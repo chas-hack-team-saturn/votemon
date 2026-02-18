@@ -41,6 +41,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ github.repository }}-${{ matrix.service }}
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=test,enable=${{ github.ref == 'refs/heads/ci-test' }}
             type=ref,event=tag
             type=sha
 
