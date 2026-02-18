@@ -20,7 +20,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          scripts: |
+          script: |
             cd /opt/votemon
             docker compose up --pull --remove-orphans
             docker system prune -a
