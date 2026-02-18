@@ -7,3 +7,13 @@
 *.vault_pass
 id_rsa
 id_rsa.pub
+
+
+*.terraform/
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+.terraform.lock.hcl.tfvars
+**/aws_creds.ini
