@@ -4,5 +4,5 @@
   become: true
 
   roles:
-    - common
-    - docker
+    - { role: common, tags: ["setup", "common"] }
+    - { role: docker, tags: ["setup", "docker"] }
