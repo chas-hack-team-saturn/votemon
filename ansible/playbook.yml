@@ -6,3 +6,4 @@
   roles:
     - { role: common, tags: ["setup", "common"] }
     - { role: docker, tags: ["setup", "docker"] }
+    - { role: deploy, tags: ["deploy"] }
