@@ -1,0 +1,34 @@
+services:
+  frontend:
+    image: ghcr.io/chas-hack-team-saturn/votemon-frontend:latest
+    restart: always
+
+  backend:
+    image: ghcr.io/chas-hack-team-saturn/votemon-backend:latest
+    restart: always
+    env_file:
+      - .env
+  db:
+    image: mariadb:12
+    restart: always
+    environment:
+      - MARIADB_ROOT_PASSWORD=${MARIADB_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./docker/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./docker/dataseed.sql:/docker-entrypoint-initdb.d/02-dataseed.sql
+  proxy:
+    image: caddy:2-alpine
+    restart: always
+    volumes:
+      - ./docker/caddy_conf:/etc/caddy:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    ports:
+      - "80:80"
+      - "443:443"
+
+volumes:
+  db_data:
+  caddy_data:
+  caddy_config:

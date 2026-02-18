@@ -1,0 +1,25 @@
+name: Update site
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Update site using SSH
+        uses: appleboy/ssh-actions@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          scripts: |
+            cd /opt/votemon
+            docker compose up --pull --remove-orphans
+            docker system prune -a

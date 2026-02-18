@@ -1,4 +1,4 @@
-poke.pabu.dev {
+votemon.pabu.dev {
     reverse_proxy frontend:80
 }
 
