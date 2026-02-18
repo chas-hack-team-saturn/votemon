@@ -1,0 +1,40 @@
+---
+- name: Create app dir
+  ansible.builtin.file:
+    path: /opt/votemon
+    state: directory
+    mode: '0755'
+    owner: "{{ ansible_user }}"
+    group: docker
+
+- name: Copy docker-compose file
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../docker-compose-prod.yml"
+    dest: /opt/votemon/docker-compose.yml
+    mode: '0644'
+
+- name: Copy docker dir
+  ansible.posix.synchronize:
+    src: "{{ playbook_dir }}/../docker/"
+    dest: /opt/votemon/docker/
+    recursive: yes
+    delete: yes
+
+- name: Create .env file
+  ansible.builtin.template:
+    src: .env.j2
+    dest: /opt/votemon/.env
+    mode: '0600'
+    owner: "{{ ansible_user }}"
+    group: docker
+
+- name: Down existing containers
+  ansible.builtin.shell:
+    cmd: docker compose down
+    chdir: /opt/votemon
+  ignore_errors: true
+
+- name: Start docker compose
+  ansible.builtin.shell:
+    cmd: docker compose up -d --remove-orphans
+    chdir: /opt/votemon
