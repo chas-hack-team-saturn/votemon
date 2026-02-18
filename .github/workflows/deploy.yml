@@ -22,5 +22,5 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd /opt/votemon
-            docker compose up --pull --remove-orphans
+            docker compose up --pull always --remove-orphans
             docker system prune -a
