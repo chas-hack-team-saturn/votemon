@@ -1,0 +1,50 @@
+---
+- name: Update apt cache and upgrade system
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: dist
+    cache_valid_time: 3600
+- name: Install basic system utils
+  ansible.builtin.apt:
+    name:
+      - firewalld
+      - python3
+      - python3-firewall
+    state: present
+- name: Uninstall packages
+  ansible.builtin.apt:
+    name:
+      - ufw
+    state: absent
+
+- name: Disable UFW
+  ansible.builtin.service:
+    name: ufw
+    state: stopped
+    enabled: false
+  ignore_errors: true
+
+- name: Ensure firewalld is running and enabled
+  ansible.builtin.service:
+    name: firewalld
+    state: started
+    enabled: true
+
+- name: firewalld - allow ssh
+  ansible.posix.firewalld:
+    service: ssh
+    permanent: true
+    state: enabled
+    immediate: true
+- name: firewalld - allow HTTP
+  ansible.posix.firewalld:
+    service: http
+    permanent: true
+    state: enabled
+    immediate: true
+- name: firewalld - allow HTTPS
+  ansible.posix.firewalld:
+    service: https
+    permanent: true
+    state: enabled
+    immediate: true

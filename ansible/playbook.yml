@@ -1,0 +1,7 @@
+---
+- name: Setup and Deploy Production Environment
+  hosts: prod
+  become: true
+
+  roles:
+    - common
