@@ -15,8 +15,8 @@
 .logo {
   height: 6rem;
   padding: 1rem 2rem;
-  background-color: var(--clr-l-fill);
+  background-color: light-dark(var(--clr-l-fill), var(--clr-d-fill));
   border-radius: 0.5rem;
-  border: 1px solid var(--clr-l-border-w);
-  box-shadow: 0 0.2rem 0 var(--clr-l-border-s);
+  border: 1px solid light-dark(var(--clr-l-border-w), var(--clr-d-border-w));
+  box-shadow: 0 0.2rem 0 light-dark(var(--clr-l-border-s), var(--clr-d-border-s));
 }

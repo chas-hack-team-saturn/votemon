@@ -1,5 +1,5 @@
 .pokemonCard {
-  background-color: #efefef;
+  background-color: light-dark(var(--clr-l-fill), var(--clr-d-fill));
   border-radius: 10px;
   padding: 10px;
   text-align: center;
