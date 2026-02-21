@@ -21,7 +21,7 @@
   --border-w: 1px solid light-dark(var(--clr-l-border-w), var(--clr-d-border-w));
 
   --shadow-color: light-dark(
-    oklch(from var(--clr-l-bg) calc(l - 0.1) c h),
+    oklch(64.009% 0.00007 271.152),
     oklch(from var(--clr-d-bg) calc(l * 0.2) c h)
   );
 
@@ -46,6 +46,25 @@
     20.4px 20.5px 22.8px -3.7px oklch(from var(--shadow-color) l c h / 0.15),
     29.9px 30.1px 33.4px -4.2px oklch(from var(--shadow-color) l c h / 0.11),
     42.2px 42.4px 47.1px -4.7px oklch(from var(--shadow-color) l c h / 0.06);
+  --content-width: 66.6vw;
+}
+
+@media (max-width: 1440px) {
+  :root {
+    --content-width: 75vw;
+  }
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --content-width: 85vw;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --content-width: 93.5vw;
+  }
 }
 
 body {

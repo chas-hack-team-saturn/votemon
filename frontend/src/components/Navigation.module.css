@@ -1,7 +1,7 @@
 .header {
-  padding: 1rem;
-  margin-bottom: 5rem;
-  margin-inline: 10rem;
+  padding: 1rem 0;
+  width: var(--content-width);
+  margin-inline: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -49,17 +49,14 @@
   .logo {
     height: 5rem;
   }
-  .header {
-    margin-inline: 0;
-  }
 }
 
 @media (max-width: 768px) {
-  .logo {
-    height: 4rem;
-  }
   .header {
-    margin-inline: 0;
+    padding: 0.25rem 0;
+  }
+  .logo {
+    height: 3rem;
   }
 
   .hamburger {

@@ -4,8 +4,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Mörk overlay med transparens */
-  z-index: 999; /* Under modalen men över bakgrunden */
+  background-color: oklch(
+    from light-dark(var(--clr-l-bg), var(--clr-d-bg)) 0.2 c h / 0.5
+  );
+  z-index: 999;
 }
 
 .modal {
