@@ -1,6 +1,7 @@
 import React from "react";
 import type { Pokemon } from "../types/pokemon";
 import styles from "./PokemonCard.module.css";
+import sticker from "../assets/votemon_sticker.svg";
 
 export interface PokemonCardProps {
   pokemon: Pokemon;
@@ -28,11 +29,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
         alt={pokemon.Name}
       />
       {showSticker && (
-        <img
-          src="/src/assets/votemon_sticker.svg"
-          alt="Voted sticker"
-          className={styles.sticker}
-        />
+        <img src={sticker} alt="Voted sticker" className={styles.sticker} />
       )}
     </button>
   );

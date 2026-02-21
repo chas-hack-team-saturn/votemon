@@ -3,14 +3,14 @@ import styles from "./Navigation.module.css";
 import ThemeToggle from "./ThemeToggle";
 import { useTheme } from "../context/ThemeContext";
 
+import logoLight from "../assets/vtmnlogo_light_landscape.svg";
+import logoDark from "../assets/vtmnlogo_dark_landscape.svg";
+
 export default function Navigation() {
   const { theme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const logoSrc =
-    theme === "light"
-      ? "/src/assets/vtmnlogo_light_landscape.svg"
-      : "/src/assets/vtmnlogo_dark_landscape.svg";
+  const logoSrc = theme === "light" ? logoLight : logoDark;
 
   return (
     <nav className={styles.header}>
