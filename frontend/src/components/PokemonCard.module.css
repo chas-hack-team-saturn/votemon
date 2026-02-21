@@ -9,6 +9,7 @@
   border: var(--border-w);
   box-shadow: var(--shadow-elevation-medium);
   position: relative;
+  transition: transform 0.2s ease-in-out;
 
   .pokemonImage {
     width: 60%;
@@ -46,6 +47,7 @@
   cursor: pointer;
   transform: scale(1.05);
   box-shadow: var(--shadow-elevation-high);
+  transition: transform 0.2s ease-in-out;
 }
 
 @media screen and (max-width: 768px) {
