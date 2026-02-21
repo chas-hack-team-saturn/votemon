@@ -17,7 +17,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
       className={styles.pokemonCard}
       onClick={() => onVote(pokemon.Id)} // Use the onVote prop
     >
-      <h3>{pokemon.Name}</h3>
+      <h2>{pokemon.Name}</h2>
       <img
         className={styles.pokemonImage}
         src={pokemon.ImageUrl}

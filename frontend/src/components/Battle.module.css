@@ -22,6 +22,7 @@
   width: 80px;
   height: auto;
   margin: 2rem;
+  fill: light-dark(var(--clr-l-brand), var(--clr-d-brand));
 }
 
 .title {

@@ -1,22 +1,107 @@
 .header {
   padding: 1rem;
-  width: 100vw;
+  margin-bottom: 5rem;
+  margin-inline: 10rem;
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  position: relative;
 }
 
 .navlink {
   text-decoration: none;
-  color: var(--clr-l-text-s);
   padding: 1rem 2rem;
   border-radius: 0.5rem;
 }
 
+.navright {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
 .logo {
   height: 6rem;
-  padding: 1rem 2rem;
-  background-color: light-dark(var(--clr-l-fill), var(--clr-d-fill));
-  border-radius: 0.5rem;
-  border: 1px solid light-dark(var(--clr-l-border-w), var(--clr-d-border-w));
-  box-shadow: 0 0.2rem 0 light-dark(var(--clr-l-border-s), var(--clr-d-border-s));
+}
+
+.hamburger {
+  display: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  z-index: 100;
+}
+
+.bar {
+  display: block;
+  width: 25px;
+  height: 3px;
+  margin: 5px auto;
+  transition:
+    transform 0.3s ease-in-out,
+    opacity 0.3s ease-in-out;
+  background-color: light-dark(var(--clr-l-text-s), var(--clr-d-text-s));
+}
+
+@media (max-width: 1024px) {
+  .logo {
+    height: 5rem;
+  }
+  .header {
+    margin-inline: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .logo {
+    height: 4rem;
+  }
+  .header {
+    margin-inline: 0;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .navright {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: light-dark(var(--clr-l-bg), var(--clr-d-bg));
+    flex-direction: column;
+    padding: 2rem;
+    gap: 2rem;
+    box-shadow: var(--shadow-elevation-medium);
+
+    /* Animation and hidden state */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition:
+      transform 0.3s ease-in-out,
+      opacity 0.3s ease-in-out,
+      visibility 0.3s ease-in-out;
+    z-index: 99;
+  }
+
+  .navright.menuOpen {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  /* Hamburger to X animation */
+  .hamburger.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  .hamburger.active .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
 }
