@@ -4,8 +4,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Mörk overlay med transparens */
-  z-index: 999; /* Under modalen men över bakgrunden */
+  background-color: oklch(
+    from light-dark(var(--clr-l-bg), var(--clr-d-bg)) 0.2 c h / 0.5
+  );
+  z-index: 999;
 }
 
 .modal {
@@ -15,9 +17,10 @@
   transform: translate(-50%, -50%);
   width: 80%;
   max-width: 600px;
-  background-color: white;
+  background-color: light-dark(var(--clr-l-fill), var(--clr-d-fill));
+  border: var(--border-w);
   border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-elevation-medium);
   z-index: 1000;
   padding: 20px;
   display: flex;

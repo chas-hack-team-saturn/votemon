@@ -3,18 +3,64 @@
   align-items: center;
   flex-direction: column;
   gap: 20px;
-  width: 100vw;
-  height: 100%;
+  width: 100%;
+  flex: 1;
+
+  @media screen and (max-width: 768px) {
+    gap: 5px;
+  }
+}
+
+.cardsWrapper {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
 .pokemonContainer {
+  width: var(--content-width);
+  margin-inline: auto;
   flex-direction: column;
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 1rem;
+  animation: slideIn 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 
   @media screen and (min-width: 768px) {
     flex-direction: row;
+  }
+
+  @media screen and (max-width: 768px) {
+    gap: 0px;
+  }
+}
+
+.slidingOut {
+  animation: slideOut 0.5s ease-in forwards !important;
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(100vw);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-100vw);
   }
 }
 
@@ -22,8 +68,20 @@
   width: 80px;
   height: auto;
   margin: 2rem;
+  fill: light-dark(var(--clr-l-brand), var(--clr-d-brand));
+
+  @media screen and (max-width: 768px) {
+    width: 45px;
+    margin: 0.25rem;
+    margin-block: 3rem;
+  }
 }
 
 .title {
   font-weight: 500;
+}
+
+.header {
+  margin-top: auto;
+  padding-bottom: 20px;
 }
