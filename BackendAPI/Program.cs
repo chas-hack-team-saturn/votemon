@@ -3,6 +3,7 @@ using Pomelo.EntityFrameworkCore.MySql;
 using Microsoft.EntityFrameworkCore;
 using BackendAPI.Models;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using BackendAPI.Services;
 
 namespace BackendAPI
 {
@@ -26,7 +27,7 @@ namespace BackendAPI
             builder.Services.AddOpenApi();
 
 
-            builder.Services.AddDbContext<PokeScrandleDbContext>(options => options.UseMySql(connectionString, serverVersion, options => options.UseMicrosoftJson()));
+            builder.Services.AddDbContext<VotemonDbContext>(options => options.UseMySql(connectionString, serverVersion, options => options.UseMicrosoftJson()));
 
             var app = builder.Build();
 
@@ -40,76 +41,7 @@ namespace BackendAPI
 
             app.UseAuthorization();
 
-
-
-
-
-            app.MapGet("/get", async (PokeScrandleDbContext dB) =>
-            {
-                var results = await dB.Pokemons.ToListAsync();
-
-                if (results.Count < 1 || results == null)
-                {
-                    Results.NotFound();
-                    return results;
-                }
-
-                Results.Ok(results);
-                return results;
-            });
-
-
-            app.MapGet("/get/top100", async (PokeScrandleDbContext dB) =>
-            {
-                var results = await dB.Pokemons.OrderByDescending(p => p.Votes).Take(100).ToListAsync();
-
-                if (results == null || results.Count < 1)
-                {
-                    Results.NotFound();
-                    return results;
-                }
-
-                Results.Ok();
-                return results;
-            });
-
-
-
-            app.MapGet("/get={id}", async (PokeScrandleDbContext dB, int id) =>
-            {
-                var pokemon = await dB.Pokemons.FindAsync(id);
-
-                if (pokemon == null)
-                {
-                    Results.NotFound();
-                    return pokemon;
-                }
-
-                Results.Ok();
-                return pokemon;
-            });
-
-
-
-
-
-            app.MapPut("/vote={id}", async (PokeScrandleDbContext dB, int id) =>
-            {
-                var pokemon = await dB.Pokemons.FindAsync(id);
-                if (pokemon == null)
-                {
-                    Results.NotFound();
-                    return;
-                }
-
-                var oldVotes = pokemon!.Votes;
-
-                int? newVotes = oldVotes + 1;
-
-                pokemon!.Votes = newVotes;
-
-                await dB.SaveChangesAsync();
-            });
+            app.UseVotemonEndpoints();
 
             app.Run();
         }
