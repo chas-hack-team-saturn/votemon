@@ -3,6 +3,8 @@ import styles from "./Navigation.module.css";
 import ThemeToggle from "./ThemeToggle";
 import { useTheme } from "../context/ThemeContext";
 
+import { NavLink } from "react-router";
+
 import logoLight from "../assets/vtmnlogo_light_landscape.svg";
 import logoDark from "../assets/vtmnlogo_dark_landscape.svg";
 
@@ -40,12 +42,12 @@ export default function Navigation() {
       <div
         className={`${styles.navright} ${isMenuOpen ? styles.menuOpen : ""}`}
       >
-        <a className={styles.navlink} href="">
+        <NavLink className={styles.navlink} to="leaderboard">
           Leaderboards
-        </a>
-        <a className={styles.navlink} href="">
+        </NavLink>
+        <NavLink className={styles.navlink} to="">
           Battle
-        </a>
+        </NavLink>
         <ThemeToggle />
       </div>
     </nav>
