@@ -1,20 +1,13 @@
 services:
   frontend:
-    build:
-      context: .
-      dockerfile: ./frontend/Dockerfile
+    image: ghcr.io/chas-hack-team-saturn/votemon-frontend:latest
     restart: always
 
   backend:
-    build:
-      context: .
-      dockerfile: ./BackendAPI/Dockerfile
+    image: ghcr.io/chas-hack-team-saturn/votemon-backend:latest
     restart: always
     env_file:
       - .env
-    ports:
-      - 8088:8080
-    
   db:
     image: mariadb:12
     restart: always
@@ -24,8 +17,6 @@ services:
       - db_data:/var/lib/mysql
       - ./docker/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
       - ./docker/dataseed.sql:/docker-entrypoint-initdb.d/02-dataseed.sql
-    ports:
-      - "9999:3306"
   proxy:
     image: caddy:2-alpine
     restart: always
@@ -34,8 +25,8 @@ services:
       - caddy_data:/data
       - caddy_config:/config
     ports:
-      - "8080:80"
-      - "8443:443"
+      - "80:80"
+      - "443:443"
 
 volumes:
   db_data:

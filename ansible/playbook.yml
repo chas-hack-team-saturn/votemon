@@ -1,0 +1,9 @@
+---
+- name: Setup and Deploy Production Environment
+  hosts: prod
+  become: true
+
+  roles:
+    - { role: common, tags: ["setup", "common"] }
+    - { role: docker, tags: ["setup", "docker"] }
+    - { role: deploy, tags: ["deploy"] }

@@ -3,14 +3,16 @@ import styles from "./Navigation.module.css";
 import ThemeToggle from "./ThemeToggle";
 import { useTheme } from "../context/ThemeContext";
 
+import { NavLink } from "react-router";
+
+import logoLight from "../assets/vtmnlogo_light_landscape.svg";
+import logoDark from "../assets/vtmnlogo_dark_landscape.svg";
+
 export default function Navigation() {
   const { theme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const logoSrc =
-    theme === "light"
-      ? "/src/assets/vtmnlogo_light_landscape.svg"
-      : "/src/assets/vtmnlogo_dark_landscape.svg";
+  const logoSrc = theme === "light" ? logoLight : logoDark;
 
   return (
     <nav className={styles.header}>
@@ -40,12 +42,12 @@ export default function Navigation() {
       <div
         className={`${styles.navright} ${isMenuOpen ? styles.menuOpen : ""}`}
       >
-        <p className={styles.navlink} data-tooltip="Coming Soon!">
+        <NavLink className={styles.navlink} to="leaderboard">
           Leaderboards
-        </p>
-        <p className={styles.navlink} data-tooltip="Coming Soon!">
+        </NavLink>
+        <NavLink className={styles.navlink} to="">
           Battle
-        </p>
+        </NavLink>
         <ThemeToggle />
       </div>
     </nav>
