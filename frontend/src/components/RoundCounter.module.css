@@ -41,6 +41,9 @@
   background-color: light-dark(var(--clr-l-brand), var(--clr-d-brand));
   color: var(--clr-d-text-s);
   border: none;
+  scale: 1.5;
+  margin-inline: 0.5rem;
+  box-shadow: var(--shadow-elevation-medium);
 }
 
 /* Responsive design */

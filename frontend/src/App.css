@@ -46,6 +46,7 @@
     20.4px 20.5px 22.8px -3.7px oklch(from var(--shadow-color) l c h / 0.15),
     29.9px 30.1px 33.4px -4.2px oklch(from var(--shadow-color) l c h / 0.11),
     42.2px 42.4px 47.1px -4.7px oklch(from var(--shadow-color) l c h / 0.06);
+
   --content-width: 66.6vw;
 }
 
@@ -84,7 +85,7 @@ h6 {
 h1 {
   font-family: "WDXL Lubrifont SC", sans-serif;
   font-size: 2.5rem;
-  color: light-dark(var(--clr-l-brand), var(--clr-d-brand));
+  color: light-dark(var(--clr-l-text-s), var(--clr-d-text-s));
 }
 
 h2 {
