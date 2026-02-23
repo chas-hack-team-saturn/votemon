@@ -1,0 +1,74 @@
+/* RoundCounter.module.css */
+
+.roundCounterContainer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.roundText {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+}
+
+/* Circles container */
+.circlesContainer {
+  display: flex;
+  gap: 12px;
+  margin: 16px 0;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 100%;
+}
+
+/* Base circle style */
+.circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.5rem;
+  border-radius: 100%;
+  background-color: light-dark(var(--clr-l-fill), var(--clr-d-fill));
+  border: var(--border-w);
+}
+
+/* Current round (blue) */
+.circle.current {
+  background-color: light-dark(var(--clr-l-brand), var(--clr-d-brand));
+  color: var(--clr-d-text-s);
+  border: none;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .circlesContainer {
+    gap: 8px;
+  }
+
+  .circle {
+    width: 36px;
+    height: 36px;
+    font-size: 13px;
+  }
+
+  .roundText {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .circlesContainer {
+    gap: 6px;
+  }
+
+  .circle {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+    border-width: 2px;
+  }
+}
