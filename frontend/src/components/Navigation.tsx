@@ -40,12 +40,12 @@ export default function Navigation() {
       <div
         className={`${styles.navright} ${isMenuOpen ? styles.menuOpen : ""}`}
       >
-        <a className={styles.navlink} href="">
+        <p className={styles.navlink} data-tooltip="Coming Soon!">
           Leaderboards
-        </a>
-        <a className={styles.navlink} href="">
+        </p>
+        <p className={styles.navlink} data-tooltip="Coming Soon!">
           Battle
-        </a>
+        </p>
         <ThemeToggle />
       </div>
     </nav>

@@ -6,8 +6,12 @@ import Battle from "./components/Battle";
 function App() {
   return (
     <>
-      <Header />
-      <Battle />
+      <header>
+        <Header />
+      </header>
+      <main>
+        <Battle />
+      </main>
     </>
   );
 }

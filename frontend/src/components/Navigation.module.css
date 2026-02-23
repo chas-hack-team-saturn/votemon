@@ -6,6 +6,10 @@
   align-items: center;
   justify-content: space-between;
   position: relative;
+
+  @media screen and (min-width: 768px) {
+    margin-bottom: 10rem;
+  }
 }
 
 .navlink {
@@ -14,6 +18,10 @@
   border-radius: 0.5rem;
   transition: transform 0.2s ease-in-out;
   display: inline-block;
+}
+
+.navlink:hover {
+  cursor: pointer;
 }
 
 .navright .navlink {
@@ -100,8 +108,10 @@
     background-color: light-dark(var(--clr-l-bg), var(--clr-d-bg));
     flex-direction: column;
     padding: 2rem;
-    gap: 2rem;
     box-shadow: var(--shadow-elevation-medium);
+
+    width: 100vw;
+    margin-left: -3.5vw;
 
     /* Animation and hidden state */
     opacity: 0;
@@ -129,5 +139,57 @@
   }
   .hamburger.active .bar:nth-child(3) {
     transform: translateY(-8px) rotate(-45deg);
+  }
+}
+
+/* Tooltip Styles */
+.navlink[data-tooltip] {
+  position: relative;
+}
+
+.navlink[data-tooltip]::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: 125%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  padding: 0.6rem 1rem;
+  background-color: light-dark(var(--clr-l-bg), var(--clr-d-bg));
+  color: light-dark(var(--clr-l-text-s), var(--clr-d-text-s));
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  border-radius: 0.6rem;
+  box-shadow: var(--shadow-elevation-medium);
+  border: 1px solid light-dark(var(--clr-l-border-s), var(--clr-d-border-s));
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0.2s ease;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.navlink[data-tooltip]:hover::before,
+.navlink[data-tooltip]:active::before {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-5px);
+}
+
+/* Mobile specific tooltip positioning */
+@media (max-width: 768px) {
+  .navlink[data-tooltip]::before {
+    bottom: auto;
+    top: 50%;
+    left: calc(100% + 10px);
+    transform: translateY(-50%) translateX(-10px);
+  }
+
+  .navlink[data-tooltip]:hover::before,
+  .navlink[data-tooltip]:active::before {
+    transform: translateY(-50%) translateX(0);
   }
 }

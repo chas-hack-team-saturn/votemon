@@ -8,6 +8,7 @@
     from light-dark(var(--clr-l-bg), var(--clr-d-bg)) 0.2 c h / 0.5
   );
   z-index: 999;
+  backdrop-filter: blur(5px);
 }
 
 .modal {
@@ -15,15 +16,66 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 80%;
-  max-width: 600px;
+  width: 90%;
+  max-width: 400px;
   background-color: light-dark(var(--clr-l-fill), var(--clr-d-fill));
   border: var(--border-w);
-  border-radius: 8px;
-  box-shadow: var(--shadow-elevation-medium);
+  border-radius: 16px;
+  box-shadow: var(--shadow-elevation-high);
   z-index: 1000;
-  padding: 20px;
+  padding: 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
+  gap: 16px;
+}
+
+.title {
+  margin: 0;
+  font-size: 3rem;
+  color: light-dark(var(--clr-l-brand), var(--clr-d-brand));
+}
+
+.text {
+  margin: 0;
+  font-size: 1.1rem;
+  opacity: 0.8;
+}
+
+.timerContainer {
+  padding: 20px;
+  width: 100%;
+}
+
+.timerLabel {
+  margin: 0;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+}
+
+.timerValue {
+  margin: 8px 0 0 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: light-dark(var(--clr-l-text-s), var(--clr-d-text-s));
+}
+
+.closeButton {
+  padding: 1rem 2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.closeButton:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+.closeButton:active {
+  transform: scale(0.95);
 }
