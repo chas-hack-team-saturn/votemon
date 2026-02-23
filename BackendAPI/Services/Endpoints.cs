@@ -8,20 +8,23 @@ namespace BackendAPI.Services
     {
         public static void UseVotemonEndpoints(this WebApplication app)
         {
-            // Calls PokeAPIand returns name of Pokemons, and store then in memory
+            // Calls PokeAPIand returns the names of every Pokemon, and
+            // then temporarily stores the names in an in-memory list.
             app.MapGet("/admin/names/set", async() =>
             {
                 await PokeApiMethods.SetPokemonNames();
                 return Results.Ok(PokeApiMethods.PokemonNames);
             });
 
-            // Checks Pokemon names stored in memory
+            // Checks the in-memory list of Pokemon names.
+            // If empty, use .MapGet("/admin/names/set") first.
             app.MapGet("/admin/names/get", async() =>
             {
                 return Results.Ok(PokeApiMethods.PokemonNames);
             });
 
-            // Inserts Pokemon names into database
+            // Checks if Pokemon table in database is empty.
+            // If empty, 
             app.MapPost("/admin/names/insert", (VotemonDbContext dB) =>
             {
                 if (dB.Pokemons.AnyAsync().Result)
@@ -36,32 +39,26 @@ namespace BackendAPI.Services
                 }
             });
 
-
-
-
             // Returns the contents of the database
-            app.MapGet("pokemons/get", (VotemonDbContext dB) =>
+            app.MapGet("/get", (VotemonDbContext dB) =>
             {
-                return VotemonDbGateway.ReadDB(dB);
+                return VotemonDbGateway.ReadDbPokemon(dB);
             });
 
+            // 
+            //app.MapGet("/get", async (VotemonDbContext dB) =>
+            //{
+            //    var results = await dB.Pokemons.ToListAsync();
 
+            //    if (results.Count < 1 || results == null)
+            //    {
+            //        Results.NotFound();
+            //        return results;
+            //    }
 
-
-
-            app.MapGet("/get", async (VotemonDbContext dB) =>
-            {
-                var results = await dB.Pokemons.ToListAsync();
-
-                if (results.Count < 1 || results == null)
-                {
-                    Results.NotFound();
-                    return results;
-                }
-
-                Results.Ok(results);
-                return results;
-            });
+            //    Results.Ok(results);
+            //    return results;
+            //});
 
 
             app.MapGet("/get/top100", async (VotemonDbContext dB) =>
@@ -78,8 +75,7 @@ namespace BackendAPI.Services
                 return results;
             });
 
-
-
+            // Gets the Pokemon specified with that DexId 
             app.MapGet("/get={id}", async (VotemonDbContext dB, int id) =>
             {
                 var pokemon = await dB.Pokemons.FindAsync(id);
@@ -94,10 +90,7 @@ namespace BackendAPI.Services
                 return pokemon;
             });
 
-
-
-
-
+            // Adds a vote to the Pokemon with that DexId
             app.MapPut("/vote={id}", async (VotemonDbContext dB, int id) =>
             {
                 var pokemon = await dB.Pokemons.FindAsync(id);
@@ -108,11 +101,8 @@ namespace BackendAPI.Services
                 }
 
                 var oldVotes = pokemon!.Votes;
-
                 int? newVotes = oldVotes + 1;
-
                 pokemon!.Votes = newVotes;
-
                 await dB.SaveChangesAsync();
             });
         }

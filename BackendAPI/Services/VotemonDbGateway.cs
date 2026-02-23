@@ -1,33 +1,54 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using BackendAPI.Data;
+
 namespace BackendAPI.Services
 {
 	public static class VotemonDbGateway
 	{
-		static public async Task<IResult> ReadDB(VotemonDbContext dB)
+        /// <summary>
+        ///		Returns the contents of the Pokemon table in database. 
+        /// </summary>
+        /// <param name="dB">The database to read from.</param>
+        /// <returns>
+        ///		<list type="bullet">
+        ///			<item>200 OK status alongside all records in Pokemon table.</item>
+		///			<item>Otherwise if empty, 404 NOT FOUND status.</item>
+        ///		</list>
+        /// </returns>
+        static public async Task<IResult> ReadDbPokemon(VotemonDbContext dB)
 		{
-			var currentDb = await dB.Pokemons.ToListAsync();
+			var result = await dB.Pokemons.ToListAsync();
 
-			if (currentDb == null)
+			if (result == null)
 			{
 				return Results.NotFound();
 			}
 
-			return Results.Ok(currentDb);
+			return Results.Ok(result);
 		}
 
+		/// <summary>
+		///		Updates each row with names.
+		/// </summary>
+		/// <param name="dB"></param>
+		/// <returns></returns>
 		static public async Task<IResult> UpdateDB(VotemonDbContext dB)
 		{
 			for (int i = 0; i < PokeApiMethods.PokemonNames.Count; i++)
 			{
 				var pokemon = await dB.Pokemons.ElementAtAsync(i + 1);
-				pokemon.Name = PokeApiMethods.PokemonNames[i + 1];
+				pokemon.Name = PokeApiMethods.PokemonNames[i];
 			}
 			await dB.SaveChangesAsync();
 
-			return VotemonDbGateway.ReadDB(dB).Result;
+			return VotemonDbGateway.ReadDbPokemon(dB).Result;
 		}
 
+		/// <summary>
+		///		Inserts database 
+		/// </summary>
+		/// <param name="dB"></param>
+		/// <returns></returns>
 		static public async Task<IResult> InsertIntoDB(VotemonDbContext dB)
 		{
 			foreach (var name in PokeApiMethods.PokemonNames)
@@ -38,39 +59,10 @@ namespace BackendAPI.Services
 			}
 			await dB.SaveChangesAsync();
 
-			return VotemonDbGateway.ReadDB(dB).Result;
+			return VotemonDbGateway.ReadDbPokemon(dB).Result;
 		}
 
 
-		static public void WriteNamesToScriptMySQL()
-		{
-			// Creates an Update script using MySQL syntax
-			using (var writer = new StreamWriter("docker/update.sql", false))
-			{
-				writer.WriteLine("USE PokeScrandle");
-
-				for (int i = 0; i < PokeApiMethods.PokemonNames.Count; i++)
-				{
-					writer.WriteLine(
-						$"UPDATE Pokemon SET Name = '{PokeApiMethods.PokemonNames[i]}' WHERE DexId = {i + 1};"
-						);
-				}
-			}
-
-			// Creates an INSERT INTO script using MySQL syntax
-			using (var writer = new StreamWriter("docker/insert.sql", false))
-			{
-				writer.WriteLine("USE PokeScrandle");
-				writer.WriteLine("INSERT INTO Pokemon (Name) VALUES");
-
-				for (int i = 0; i < PokeApiMethods.PokemonNames.Count; i++)
-				{
-					if (i == PokeApiMethods.PokemonNames.Count - 1)
-						writer.WriteLine($"    ('{PokeApiMethods.PokemonNames[i]}');");
-					else
-						writer.WriteLine($"    ('{PokeApiMethods.PokemonNames[i]}'),");
-				}
-			}
-		}
+		
 	}
 }

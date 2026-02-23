@@ -3,6 +3,9 @@ using System.Text.Json;
 
 namespace BackendAPI.Services
 {
+	/// <summary>
+	///		Utility class used for calling PokeAPI.
+	/// </summary>
 	public static class PokeApiMethods
 	{
 		static public Uri PokeApiPokemonPath { get; private set; } = new Uri("https://pokeapi.co/api/v2/pokemon/");
@@ -24,6 +27,7 @@ namespace BackendAPI.Services
 
 		static public async Task SetPokemonNames()
 		{
+			PokeApiMethods.PokemonNames.Clear();
 			using (HttpClient client = new HttpClient())
 			{
 				client.BaseAddress = PokeApiMethods.PokeApiPokemonPath;
