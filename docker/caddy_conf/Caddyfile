@@ -1,0 +1,7 @@
+votemon.pabu.dev {
+    reverse_proxy frontend:80
+}
+
+:80 {
+    reverse_proxy frontend:80
+}

@@ -2,12 +2,11 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 20px;
+  gap: 4rem;
   width: 100%;
-  flex: 1;
 
   @media screen and (max-width: 768px) {
-    gap: 5px;
+    gap: 1.5rem;
   }
 }
 
@@ -17,6 +16,10 @@
   width: 100%;
   align-items: center;
   justify-content: center;
+
+  @media screen and (min-width: 768px) {
+    max-height: 33vh;
+  }
 }
 
 .pokemonContainer {
@@ -77,11 +80,6 @@
   }
 }
 
-.title {
-  font-weight: 500;
-}
-
 .header {
-  margin-top: auto;
   padding-bottom: 20px;
 }
