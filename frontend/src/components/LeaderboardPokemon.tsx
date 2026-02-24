@@ -1,17 +1,16 @@
-import type { Pokemon } from "../types/pokemon";
+import type { PokemonGetDTO } from "../types/pokemonGetDTO";
 
 export interface LeaderboardPokemonProps {
-    pokemon: Pokemon;
+  pokemon: PokemonGetDTO;
 }
 
-const LeaderboardPokemon: React.FC<LeaderboardPokemonProps> = ({pokemon}) => {
-
-    return (
-        <li>
-            <p>{pokemon.Id}</p>
-            <p>{pokemon.Name}</p>
-        </li>
-    )
-}
+const LeaderboardPokemon: React.FC<LeaderboardPokemonProps> = ({ pokemon }) => {
+  return (
+    <li>
+      <p>{pokemon.dexId}</p>
+      <p>{pokemon.name}</p>
+    </li>
+  );
+};
 
 export default LeaderboardPokemon;
