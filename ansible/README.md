@@ -1,6 +1,6 @@
 # setup ansible
 
-content of host_vars/production_server.yml:
+content of ansible/host_vars/production_server.yml:
 ```yml
 ansible_host: the ip address of the prod server
 ansible_user: the user to log in as via ssh

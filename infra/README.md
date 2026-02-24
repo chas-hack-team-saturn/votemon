@@ -1,9 +1,9 @@
 # setup terraform/tofu
 
 create a vars file at infra/terraform.tfvars
-and fill in the vars from variables.tf
+and fill in the vars from infra/variables.tf
 
-then create a file named aws_creds.ini with this content filled int
+then create a file named infra/aws_creds.ini with this content filled in
 ```ini
 [votemon]
 aws_access_key_id = keyid
