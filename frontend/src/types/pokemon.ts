@@ -4,4 +4,5 @@ export interface Pokemon {
   Url: string;
   Votes: number;
   ImageUrl: string;
+  EloRating: number;
 }
