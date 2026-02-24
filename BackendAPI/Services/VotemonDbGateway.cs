@@ -19,7 +19,7 @@ namespace BackendAPI.Services
 		{
 			var result = await dB.Pokemons.ToListAsync();
 
-			if (result == null)
+			if (result == null || result.Count <= 0)
 			{
 				return Results.NotFound();
 			}
@@ -36,7 +36,7 @@ namespace BackendAPI.Services
 		{
 			for (int i = 0; i < PokeApiMethods.PokemonNames.Count; i++)
 			{
-				var pokemon = await dB.Pokemons.ElementAtAsync(i + 1);
+				var pokemon = await dB.Pokemons.ElementAtAsync(i);
 				pokemon.Name = PokeApiMethods.PokemonNames[i];
 			}
 			await dB.SaveChangesAsync();

@@ -10,7 +10,7 @@ namespace BackendAPI.Services
         {
             // Calls PokeAPIand returns the names of every Pokemon, and
             // then temporarily stores the names in an in-memory list.
-            app.MapGet("/admin/names/set", async() =>
+            app.MapGet("/names/set", async() =>
             {
                 await PokeApiMethods.SetPokemonNames();
                 return Results.Ok(PokeApiMethods.PokemonNames);
@@ -18,23 +18,24 @@ namespace BackendAPI.Services
 
             // Checks the in-memory list of Pokemon names.
             // If empty, use .MapGet("/admin/names/set") first.
-            app.MapGet("/admin/names/get", async() =>
+            app.MapGet("/names/get", async() =>
             {
                 return Results.Ok(PokeApiMethods.PokemonNames);
             });
 
             // Checks if Pokemon table in database is empty.
-            // If empty, 
-            app.MapPost("/admin/names/insert", (VotemonDbContext dB) =>
+            // If empty, runs insert into
+            // If not empty, runs update
+            app.MapPut("/names/update", (VotemonDbContext dB) =>
             {
                 if (dB.Pokemons.AnyAsync().Result)
                 {
-                    Console.WriteLine("Is not empty");
+                    Console.WriteLine("Database table is not empty");
                     return VotemonDbGateway.UpdateDB(dB);
                 }
                 else
                 {
-                    Console.WriteLine("Is Empty!!!");
+                    Console.WriteLine("Database table is Empty!!!");
                     return VotemonDbGateway.InsertIntoDB(dB);
                 }
             });
@@ -45,27 +46,12 @@ namespace BackendAPI.Services
                 return VotemonDbGateway.ReadDbPokemon(dB);
             });
 
-            // 
-            //app.MapGet("/get", async (VotemonDbContext dB) =>
-            //{
-            //    var results = await dB.Pokemons.ToListAsync();
-
-            //    if (results.Count < 1 || results == null)
-            //    {
-            //        Results.NotFound();
-            //        return results;
-            //    }
-
-            //    Results.Ok(results);
-            //    return results;
-            //});
-
 
             app.MapGet("/get/top100", async (VotemonDbContext dB) =>
             {
                 var results = await dB.Pokemons.OrderByDescending(p => p.Votes).Take(100).ToListAsync();
 
-                if (results == null || results.Count < 1)
+                if (results == null || results.Count <= 0)
                 {
                     Results.NotFound();
                     return results;
@@ -80,6 +66,11 @@ namespace BackendAPI.Services
             {
                 var pokemon = await dB.Pokemons.FindAsync(id);
 
+                if (id <= 0)
+                {
+                    Results.NotFound();
+                    return pokemon;
+                }
                 if (pokemon == null)
                 {
                     Results.NotFound();

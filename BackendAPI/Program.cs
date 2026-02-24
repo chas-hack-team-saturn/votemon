@@ -12,8 +12,10 @@ namespace BackendAPI
         public static void Main(string[] args)
         {
 
-            var password = Environment.GetEnvironmentVariable("MARIADB_PASSWORD");
-            string connectionString = $"Server=db;Port=3306;Database=PokeScrandle;Uid=root;Pwd={password};";
+            var password = Environment.GetEnvironmentVariable("MARIADB_PASSWORD") ?? "asdf";
+            var server = Environment.GetEnvironmentVariable("MARIADB_HOST") ?? "localhost";
+            var port = Environment.GetEnvironmentVariable("MARIADB_PORT") ?? "9999";
+            string connectionString = $"Server={server};Port={port};Database=PokeScrandle;Uid=root;Pwd={password};";
             var serverVersion = new MariaDbServerVersion(new Version(12, 1, 2));
 
 

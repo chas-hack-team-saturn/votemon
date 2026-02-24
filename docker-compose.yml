@@ -10,8 +10,10 @@ services:
       context: .
       dockerfile: ./BackendAPI/Dockerfile
     restart: always
-    env_file:
-      - .env
+    environment:
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - MARIADB_HOST=db 
+      - MARIADB_PORT=3306
     ports:
       - 8088:8080
     

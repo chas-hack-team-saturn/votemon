@@ -1,5 +1,7 @@
-USE PokeScrandle
-INSERT INTO Pokemon (Name) VALUES
+Use PokeScrandle;
+
+INSERT INTO Pokemon (Name) 
+VALUES
     ('bulbasaur'),
     ('ivysaur'),
     ('venusaur'),

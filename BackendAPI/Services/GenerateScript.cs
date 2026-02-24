@@ -17,7 +17,7 @@
 		/// </remarks>
 		static internal void InsertIntoPokemon()
 		{
-			using (var writer = new StreamWriter("insert.sql", false))
+			using (var writer = new StreamWriter("dataseed.sql", false))
 			{
 				writer.WriteLine("USE PokeScrandle");
 				writer.WriteLine("INSERT INTO Pokemon (Name) VALUES");
