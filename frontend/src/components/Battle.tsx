@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import EloRank from "elo-rank";
 import RoundCounter from "./RoundCounter";
 import styles from "./Battle.module.css";
 import { PokemonCard } from "./PokemonCard";
@@ -13,6 +14,7 @@ export interface Rounds {
 }
 
 export default function Battle() {
+  const elo = new EloRank(32);
   const [hasFinishedDaily, setHasFinishedDaily] = useState<boolean>(false);
   const [rounds, setRounds] = useState<Rounds>({
     totalRounds: 10,
@@ -99,6 +101,28 @@ export default function Battle() {
     );
 
     console.log(`Voted for Pokémon with ID: ${pokemonId}`);
+
+    // Update ELO ratings
+    if (pokemon1 && pokemon2) {
+      const winner = pokemonId === pokemon1.Id ? pokemon1 : pokemon2;
+      const loser = pokemonId === pokemon1.Id ? pokemon2 : pokemon1;
+
+      const expectedScoreWinner = elo.getExpected(winner.EloRating, loser.EloRating);
+      const expectedScoreLoser = elo.getExpected(loser.EloRating, winner.EloRating);
+
+      const newRatingWinner = elo.updateRating(expectedScoreWinner, 1, winner.EloRating);
+      const newRatingLoser = elo.updateRating(expectedScoreLoser, 0, loser.EloRating);
+
+      console.log(`ELO Update: ${winner.Name} (${winner.EloRating} -> ${newRatingWinner}), ${loser.Name} (${loser.EloRating} -> ${newRatingLoser})`);
+
+      if (pokemonId === pokemon1.Id) {
+        setPokemon1({ ...pokemon1, EloRating: newRatingWinner });
+        setPokemon2({ ...pokemon2, EloRating: newRatingLoser });
+      } else {
+        setPokemon1({ ...pokemon1, EloRating: newRatingLoser });
+        setPokemon2({ ...pokemon2, EloRating: newRatingWinner });
+      }
+    }
 
     // Wait 1 second before advancing to show the sticker visually
     setTimeout(() => {
