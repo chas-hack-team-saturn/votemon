@@ -17,3 +17,4 @@ id_rsa.pub
 *.tfvars.json
 .terraform.lock.hcl.tfvars
 **/aws_creds.ini
+node_modules/
