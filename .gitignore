@@ -429,7 +429,7 @@ FodyWeavers.xsd
 *.msp
 
 # Any additional ignores will be added under here
-
+appsettings.json
 
 
 
