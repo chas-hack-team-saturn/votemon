@@ -28,6 +28,9 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
         src={pokemon.ImageUrl}
         alt={pokemon.Name}
       />
+      <div className={styles.stats}>
+        <p>ELO: {pokemon.EloRating}</p>
+      </div>
       {showSticker && (
         <img src={sticker} alt="Voted sticker" className={styles.sticker} />
       )}

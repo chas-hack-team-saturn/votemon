@@ -23,6 +23,8 @@ export const getPokemon: Function = async (): Promise<Pokemon> => {
       ImageUrl:
         data.sprites.other["official-artwork"].front_default ||
         `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${data.id}.png`,
+      Votes: 0,
+      EloRating: 1200,
     };
   } catch (error) {
     console.error("Ett fel inträffade", error);
