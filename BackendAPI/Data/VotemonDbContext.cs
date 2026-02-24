@@ -6,13 +6,13 @@ using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
 namespace BackendAPI.Data;
 
-public partial class PokeScrandleDbContext : DbContext
+public partial class VotemonDbContext : DbContext
 {
-    public PokeScrandleDbContext()
+    public VotemonDbContext()
     {
     }
 
-    public PokeScrandleDbContext(DbContextOptions<PokeScrandleDbContext> options)
+    public VotemonDbContext(DbContextOptions<VotemonDbContext> options)
         : base(options)
     {
     }
