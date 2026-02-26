@@ -1,4 +1,4 @@
-Use PokeScrandle;
+Use Votemon;
 
 INSERT INTO Pokemon (Name) 
 VALUES

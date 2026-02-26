@@ -1,8 +1,5 @@
 using BackendAPI.Data;
-using Pomelo.EntityFrameworkCore.MySql;
 using Microsoft.EntityFrameworkCore;
-using BackendAPI.Models;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using BackendAPI.Services;
 
 namespace BackendAPI
@@ -15,7 +12,7 @@ namespace BackendAPI
             var password = Environment.GetEnvironmentVariable("MARIADB_PASSWORD") ?? "asdf";
             var server = Environment.GetEnvironmentVariable("MARIADB_HOST") ?? "localhost";
             var port = Environment.GetEnvironmentVariable("MARIADB_PORT") ?? "9999";
-            string connectionString = $"Server={server};Port={port};Database=PokeScrandle;Uid=root;Pwd={password};";
+            string connectionString = $"Server={server};Port={port};Database=Votemon;Uid=root;Pwd={password};";
             var serverVersion = new MariaDbServerVersion(new Version(12, 1, 2));
 
 
