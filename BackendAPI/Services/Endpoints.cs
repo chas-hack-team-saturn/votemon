@@ -1,105 +1,90 @@
 ﻿using BackendAPI.Data;
-using BackendAPI.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace BackendAPI.Services
 {
-    public static class Endpoints
-    {
-        public static void UseVotemonEndpoints(this WebApplication app)
-        {
-            // Calls PokeAPIand returns the names of every Pokemon, and
-            // then temporarily stores the names in an in-memory list.
-            app.MapGet("/names/set", async() =>
-            {
-                await PokeApiMethods.SetPokemonNames();
-                return Results.Ok(PokeApiMethods.PokemonNames);
-            });
+	public static class Endpoints
+	{
+		public static void UseVotemonEndpoints(this WebApplication app)
+		{
+			// Returns every Pokemons in the database.
+			app.MapGet("/get", (VotemonDbContext dB) =>
+			{
+				return VotemonDbGateway.ReadDBPokemon(dB);
+			});
 
-            // Checks the in-memory list of Pokemon names.
-            // If empty, use .MapGet("/admin/names/set") first.
-            app.MapGet("/names/get", async() =>
-            {
-                return Results.Ok(PokeApiMethods.PokemonNames);
-            });
+			// Returns the Pokemon specified by the inputed DexId.
+			app.MapGet("/get={dexId}", (VotemonDbContext dB, int dexId) =>
+			{
+				return VotemonDbGateway.ReadDBPokemon(dB, dexId);
+			});
 
-            // Checks if Pokemon table in database is empty.
-            // If empty, runs insert into
-            // If not empty, runs update
-            app.MapPut("/names/update", (VotemonDbContext dB) =>
-            {
-                if (dB.Pokemons.AnyAsync().Result)
-                {
-                    Console.WriteLine("Database table is not empty");
-                    return VotemonDbGateway.UpdateDB(dB);
-                }
-                else
-                {
-                    Console.WriteLine("Database table is Empty!!!");
-                    return VotemonDbGateway.InsertIntoDB(dB);
-                }
-            });
+			// Returns the top 100 Pokemons with the highest ELO rating.
+			app.MapGet("/get/top100", (VotemonDbContext dB) =>
+			{
+				return VotemonDbGateway.ReadDBPokemonELORating(dB);
+			});
 
-            // Returns the contents of the database
-            app.MapGet("/get", (VotemonDbContext dB) =>
-            {
-                return VotemonDbGateway.ReadDbPokemon(dB);
-            });
+			// Returns the top {number} of Pokemons with the highest ELO rating after {skipped} amount.
+			app.MapGet("/get/top={number}&skip={skipped}", (VotemonDbContext dB, int number, int skipped) =>
+			{
+				return VotemonDbGateway.ReadDBPokemonELORating(dB, skipped, number);
+			});
 
+			// Does some ELO magic. Not sure how you'll get winner or loser DexId though.
+			//
+			//   Try this syntax: "/battle?winnerDexId={int}&loserDexId{int}/"
+			//
+			app.MapPut("/battle", (VotemonDbContext dB, int winnerDexId, int loserDexId) =>
+			{
+				return VotemonDbGateway.UpdateDBPokemonBattle(dB, winnerDexId, loserDexId);
+			});
 
-            app.MapGet("/get/top100", async (VotemonDbContext dB) =>
-            {
-                var results = await dB.Pokemons.OrderByDescending(p => p.Votes).Take(100).ToListAsync();
-
-                if (results == null || results.Count <= 0)
-                {
-                    Results.NotFound();
-                    return results;
-                }
-
-                Results.Ok();
-                return results;
-            });
-
-            // Gets the Pokemon specified with that DexId 
-            app.MapGet("/get={id}", async (VotemonDbContext dB, int id) =>
-            {
-                var pokemon = await dB.Pokemons.FindAsync(id);
-
-                if (id <= 0)
-                {
-                    Results.NotFound();
-                    return pokemon;
-                }
-                if (pokemon == null)
-                {
-                    Results.NotFound();
-                    return pokemon;
-                }
-
-                Results.Ok();
-                return pokemon;
-            });
-
-            // Adds a vote to the Pokemon with that DexId
-            app.MapPut("/vote={id}", async (VotemonDbContext dB, int id) =>
-            {
-                var pokemon = await dB.Pokemons.FindAsync(id);
-                if (pokemon == null)
-                {
-                    Results.NotFound();
-                    return;
-                }
-
-                var oldVotes = pokemon!.Votes;
-                int? newVotes = oldVotes + 1;
-                pokemon!.Votes = newVotes;
-                await dB.SaveChangesAsync();
-            });
-        }
+			// Adds a vote to the Pokemon with that DexId
+			//   If we can get the ELO system working, "/battle" instead. 
+			app.MapPut("/vote={dexId}", async (VotemonDbContext dB, int dexId) =>
+			{
+				return VotemonDbGateway.UpdateDBPokemonVote(dB, dexId);
+			});
 
 
 
 
-    }
+
+			#region Used for testing, ignore these
+
+			// Calls PokeAPI to get and store the names of every Pokemon on an in-memory list.
+			app.MapGet("/names/set", async () =>
+			{
+				await PokeApiMethods.SetPokemonNames();
+				return Results.Ok(PokeApiMethods.PokemonNames);
+			});
+
+			// Checks the in-memory list of Pokemon names.
+			//   If empty, use .MapGet("/admin/names/set") first.
+			app.MapGet("/names/get", async () =>
+			{
+				return Results.Ok(PokeApiMethods.PokemonNames);
+			});
+
+			// Checks if Pokemon table in database is empty.
+			//   If empty, runs insert into.
+			//   If not empty, runs update.
+			app.MapPut("/names/update", (VotemonDbContext dB) =>
+			{
+				if (dB.Pokemons.AnyAsync().Result)
+				{
+					Console.WriteLine("Database table is not empty. Running UpdateDBPokemonNames().");
+					return VotemonDbGateway.UpdateDBPokemonNames(dB);
+				}
+				else
+				{
+					Console.WriteLine("Database table is empty. Running InsertDBPokemonNames().");
+					return VotemonDbGateway.InsertDBPokemonNames(dB);
+				}
+			});
+
+			#endregion
+		}
+	}
 }
