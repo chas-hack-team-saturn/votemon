@@ -1,5 +1,8 @@
 services:
   backend:
+    build:
+      context: .
+      dockerfile: ./BackendAPI/Dockerfile
     environment:
       - MARIADB_PASSWORD=${MARIADB_PASSWORD}
       - MARIADB_HOST=db 
