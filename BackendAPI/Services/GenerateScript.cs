@@ -19,7 +19,7 @@
 		{
 			using (var writer = new StreamWriter("dataseed.sql", false))
 			{
-				writer.WriteLine("USE PokeScrandle");
+				writer.WriteLine("USE Votemon");
 				writer.WriteLine("INSERT INTO Pokemon (Name) VALUES");
 
 				for (int i = 0; i < PokeApiMethods.PokemonNames.Count; i++)
@@ -43,7 +43,7 @@
 		{
 			using (var writer = new StreamWriter("update.sql", false))
 			{
-				writer.WriteLine("USE PokeScrandle");
+				writer.WriteLine("USE Votemon");
 
 				for (int i = 0; i < PokeApiMethods.PokemonNames.Count; i++)
 				{
