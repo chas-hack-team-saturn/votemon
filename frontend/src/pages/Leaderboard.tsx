@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import LeaderboardPokemon from "../components/LeaderboardPokemon";
 import type { PokemonGetDTO } from "../types/pokemonGetDTO";
 
+//Gå in på 'https://votemon.pabu.dev' istället för 'http://localhost:5173/'
+
 const Leaderboard = () => {
   const [pokemons, setPokemons] = useState<PokemonGetDTO[]>([]);
   const [loading, setLoading] = useState(true);
