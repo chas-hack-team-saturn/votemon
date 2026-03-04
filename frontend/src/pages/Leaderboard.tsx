@@ -7,12 +7,12 @@ const Leaderboard = () => {
   const [pokemons, setPokemons] = useState<PokemonGetDTO[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const globalURL = "https://votemon.pabu.dev/get/";
+  const globalURL = "https://votemon.pabu.dev/";
 
   useEffect(() => {
     const fetchPokemons = async () => {
       try {
-        const response = await fetch(globalURL + "top100/");
+        const response = await fetch(globalURL);
         if (!response.ok) {
           throw new Error("Kunde inte hämta datan");
         }
