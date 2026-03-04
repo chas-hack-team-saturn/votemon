@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using BackendAPI.Models;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
 namespace BackendAPI.Data;
 
@@ -18,8 +17,6 @@ public partial class VotemonDbContext : DbContext
     }
 
     public virtual DbSet<Pokemon> Pokemons { get; set; }
-
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -42,6 +39,9 @@ public partial class VotemonDbContext : DbContext
                 .HasCharSet("utf8mb3");
             entity.Property(e => e.Votes)
                 .HasDefaultValueSql("'0'")
+                .HasColumnType("int(11)");
+            entity.Property(e => e.EloRating)
+                .HasDefaultValueSql("'1200'")
                 .HasColumnType("int(11)");
         });
 

@@ -1,4 +1,4 @@
-USE PokeScrandle
+USE Votemon;
 UPDATE Pokemon SET Name = 'bulbasaur' WHERE DexId = 1;
 UPDATE Pokemon SET Name = 'ivysaur' WHERE DexId = 2;
 UPDATE Pokemon SET Name = 'venusaur' WHERE DexId = 3;
