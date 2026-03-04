@@ -30,7 +30,7 @@ namespace BackendAPI
 			{
 				options.AddPolicy("Votemon", (policy) =>
 				{
-					policy.WithOrigins(urlCors).AllowAnyMethod().AllowAnyHeader();
+					policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
 				});
 			});
 
