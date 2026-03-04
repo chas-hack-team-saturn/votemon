@@ -9,6 +9,8 @@ const LeaderboardPokemon: React.FC<LeaderboardPokemonProps> = ({ pokemon }) => {
     <li>
       <p>{pokemon.dexId}</p>
       <p>{pokemon.name}</p>
+      <p>{pokemon.votes}</p>
+      <p>{pokemon.eloRating}</p>
     </li>
   );
 };
