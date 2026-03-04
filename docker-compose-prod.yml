@@ -1,8 +1,4 @@
 services:
-  frontend:
-    image: ghcr.io/chas-hack-team-saturn/votemon-frontend:latest
-    restart: always
-
   backend:
     image: ghcr.io/chas-hack-team-saturn/votemon-backend:latest
     restart: always
@@ -17,8 +13,8 @@ services:
       - db_data:/var/lib/mysql
       - ./docker/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
       - ./docker/dataseed.sql:/docker-entrypoint-initdb.d/02-dataseed.sql
-  proxy:
-    image: caddy:2-alpine
+  frontend:
+    image: ghcr.io/chas-hack-team-saturn/votemon-frontend:latest
     restart: always
     volumes:
       - ./docker/caddy_conf:/etc/caddy:ro
