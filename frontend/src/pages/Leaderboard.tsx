@@ -15,10 +15,9 @@ const Leaderboard = () => {
     const fetchPokemons = async () => {
       try {
         const response = await fetch(globalUrl + "get/top100");
-        if (!response.ok) {
+        /*if (!response.ok) {
           throw new Error("Kunde inte hämta datan");
-        }
-
+        }*/
         const data = await response.json();
         setPokemons(data.results);
       } catch (error) {
