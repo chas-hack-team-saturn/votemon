@@ -1,20 +1,20 @@
 import { NavLink } from "react-router";
 import { useState, useEffect } from "react";
 import LeaderboardPokemon from "../components/LeaderboardPokemon";
-import type { PokemonGetDTO } from "../types/pokemonGetDTO";
+import { type PokemonGetDTO } from "../types/pokemonGetDTO";
 
-//Gå in på 'https://votemon.pabu.dev' istället för 'http://localhost:5173/'
+//Gå till "https://votemon.pabu.dev/" istället för localhost
 
 const Leaderboard = () => {
   const [pokemons, setPokemons] = useState<PokemonGetDTO[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const globalURL = "https://votemon.pabu.dev/";
+  const globalUrl = "https://votemon.pabu.dev/";
 
   useEffect(() => {
     const fetchPokemons = async () => {
       try {
-        const response = await fetch(globalURL);
+        const response = await fetch(globalUrl + "get/top100");
         if (!response.ok) {
           throw new Error("Kunde inte hämta datan");
         }
