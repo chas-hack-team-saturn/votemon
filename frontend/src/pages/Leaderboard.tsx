@@ -9,17 +9,19 @@ const Leaderboard = () => {
   const [pokemons, setPokemons] = useState<PokemonGetDTO[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const globalUrl = "https://votemon.pabu.dev/";
+  const globalUrl = import.meta.env.DEV
+    ? "http://localhost:8088/"
+    : "https://votemon.pabu.dev/";
 
   useEffect(() => {
     const fetchPokemons = async () => {
       try {
         const response = await fetch(globalUrl + "get/top100");
-        /*if (!response.ok) {
+        if (!response.ok) {
           throw new Error("Kunde inte hämta datan");
-        }*/
+        }
         const data = await response.json();
-        setPokemons(data.results);
+        setPokemons(data);
       } catch (error) {
         console.error("Leaderboard listan gick ej att hämta!", error);
       } finally {

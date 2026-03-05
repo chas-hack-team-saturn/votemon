@@ -1,4 +1,5 @@
 import type { PokemonGetDTO } from "../types/pokemonGetDTO";
+import styles from "./LeaderboardPokemon.module.css";
 
 export interface LeaderboardPokemonProps {
   pokemon: PokemonGetDTO;
@@ -6,11 +7,11 @@ export interface LeaderboardPokemonProps {
 
 const LeaderboardPokemon: React.FC<LeaderboardPokemonProps> = ({ pokemon }) => {
   return (
-    <li>
-      <p>{pokemon.dexId}</p>
-      <p>{pokemon.name}</p>
-      <p>{pokemon.votes}</p>
-      <p>{pokemon.eloRating}</p>
+    <li className={styles.leaderboardItem}>
+      <p>Id: {pokemon.dexId}</p>
+      <p>Name: {pokemon.name}</p>
+      <p>Votes: {pokemon.votes}</p>
+      <p>Elo: {pokemon.eloRating}</p>
     </li>
   );
 };
