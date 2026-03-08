@@ -44,7 +44,7 @@ namespace BackendAPI.Services
 			//   Syntax: /vote?dexId={int}
 			//
 			// This is for testing, use "/battle" instead to add votes
-			app.MapPut("/vote", async (VotemonDbContext dB, int dexId) =>
+			app.MapPut("/vote", (VotemonDbContext dB, int dexId) =>
 			{
 				return VotemonDbGateway.UpdateDBPokemonVote(dB, dexId);
 			});
