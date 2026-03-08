@@ -31,18 +31,20 @@ namespace BackendAPI.Services
 				return VotemonDbGateway.ReadDBPokemonELORating(dB, skipped, number);
 			});
 
-			// Does some ELO magic. Not sure how you'll get winner or loser DexId though.
+			// Does some ELO magic.
 			//
-			//   Try this syntax: "/battle?winnerDexId={int}&loserDexId{int}/"
+			//   Syntax: "/battle?winnerDexId={int}&loserDexId{int}/"
 			//
 			app.MapPut("/battle", (VotemonDbContext dB, int winnerDexId, int loserDexId) =>
 			{
 				return VotemonDbGateway.UpdateDBPokemonBattle(dB, winnerDexId, loserDexId);
 			});
 
-			// Adds a vote to the Pokemon with that DexId
-			//   If we can get the ELO system working, "/battle" instead. 
-			app.MapPut("/vote={dexId}", async (VotemonDbContext dB, int dexId) =>
+			// Adds a vote to the Pokemon with that DexId.
+			//   Syntax: /vote?dexId={int}
+			//
+			// This is for testing, use "/battle" instead to add votes
+			app.MapPut("/vote", async (VotemonDbContext dB, int dexId) =>
 			{
 				return VotemonDbGateway.UpdateDBPokemonVote(dB, dexId);
 			});
