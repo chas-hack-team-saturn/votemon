@@ -7,6 +7,7 @@ import { getPokemon } from "../api/api";
 import type { Pokemon } from "../types/pokemon";
 import FinishedModal from "../components/FinishedModal";
 import { storage } from "../utils/storage"; // Import the storage utility
+import { API_URL } from "../api/config";
 
 export interface Rounds {
   totalRounds: number;
@@ -87,35 +88,51 @@ export default function Battle() {
   };
 
   // Add vote for a specific Pokémon
-  const addVote = (pokemonId: number) => {
+  const addVote = (dexId: number) => {
     // Show modal if already finished for today but still allow UI interaction
     if (hasFinishedDaily) {
       setShowModal(true); // Visa modalen om det redan har avslutats
       return;
     }
 
-    setVotedFor(pokemonId);
+    setVotedFor(dexId);
 
-    fetch(`backend/vote=${pokemonId}`, { method: "Put" }).catch((err) =>
+    fetch(`${API_URL}/vote?dexId=${dexId}`, { method: "Put" }).catch((err) =>
       console.error("Error recording vote:", err),
     );
 
-    console.log(`Voted for Pokémon with ID: ${pokemonId}`);
+    console.log(`Voted for Pokémon with ID: ${dexId}`);
 
     // Update ELO ratings
     if (pokemon1 && pokemon2) {
-      const winner = pokemonId === pokemon1.Id ? pokemon1 : pokemon2;
-      const loser = pokemonId === pokemon1.Id ? pokemon2 : pokemon1;
+      const winner = dexId === pokemon1.Id ? pokemon1 : pokemon2;
+      const loser = dexId === pokemon1.Id ? pokemon2 : pokemon1;
 
-      const expectedScoreWinner = elo.getExpected(winner.EloRating, loser.EloRating);
-      const expectedScoreLoser = elo.getExpected(loser.EloRating, winner.EloRating);
+      const expectedScoreWinner = elo.getExpected(
+        winner.EloRating,
+        loser.EloRating,
+      );
+      const expectedScoreLoser = elo.getExpected(
+        loser.EloRating,
+        winner.EloRating,
+      );
 
-      const newRatingWinner = elo.updateRating(expectedScoreWinner, 1, winner.EloRating);
-      const newRatingLoser = elo.updateRating(expectedScoreLoser, 0, loser.EloRating);
+      const newRatingWinner = elo.updateRating(
+        expectedScoreWinner,
+        1,
+        winner.EloRating,
+      );
+      const newRatingLoser = elo.updateRating(
+        expectedScoreLoser,
+        0,
+        loser.EloRating,
+      );
 
-      console.log(`ELO Update: ${winner.Name} (${winner.EloRating} -> ${newRatingWinner}), ${loser.Name} (${loser.EloRating} -> ${newRatingLoser})`);
+      console.log(
+        `ELO Update: ${winner.Name} (${winner.EloRating} -> ${newRatingWinner}), ${loser.Name} (${loser.EloRating} -> ${newRatingLoser})`,
+      );
 
-      if (pokemonId === pokemon1.Id) {
+      if (dexId === pokemon1.Id) {
         setPokemon1({ ...pokemon1, EloRating: newRatingWinner });
         setPokemon2({ ...pokemon2, EloRating: newRatingLoser });
       } else {
