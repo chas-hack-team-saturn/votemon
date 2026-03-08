@@ -97,9 +97,19 @@ export default function Battle() {
 
     setVotedFor(dexId);
 
-    fetch(`${API_URL}vote?dexId=${dexId}`, { method: "Put" }).catch((err) =>
-      console.error("Error recording vote:", err),
-    );
+    const winnerId = dexId;
+    const loserId = dexId === pokemon1?.Id ? pokemon2?.Id : pokemon1?.Id;
+
+    fetch(`${API_URL}battle?winnerDexId=${winnerId}&loserDexId=${loserId}`, {
+      method: "Put",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Faaled to record vote");
+        }
+        console.log(`Voted for Pokémon ${winnerId} against ${loserId}`);
+      })
+      .catch((err) => console.error("Error recording vote:", err));
 
     console.log(`Voted for Pokémon with ID: ${dexId}`);
 
