@@ -97,7 +97,7 @@ export default function Battle() {
 
     setVotedFor(dexId);
 
-    fetch(`${API_URL}/vote?dexId=${dexId}`, { method: "Put" }).catch((err) =>
+    fetch(`${API_URL}vote?dexId=${dexId}`, { method: "Put" }).catch((err) =>
       console.error("Error recording vote:", err),
     );
 
